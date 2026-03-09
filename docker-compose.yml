@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   n8n:
     image: n8nio/n8n:latest
@@ -8,10 +6,10 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_ENABLE_EXECUTE_COMMAND=true
+      - N8N_ENABLE_COMMAND_EXECUTION=true
       - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=changeme
+      - N8N_BASIC_AUTH_USER=Learn N8n
+      - N8N_BASIC_AUTH_PASSWORD=r1Fa&3i2zT7o
       - NODE_ENV=production
       - WEBHOOK_URL=http://localhost:5678/
     volumes:
