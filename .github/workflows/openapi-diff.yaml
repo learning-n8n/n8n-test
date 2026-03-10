@@ -23,6 +23,19 @@ jobs:
       - name: Show diff result
         run: cat diff_result.txt
 
+      # Detect PR related to this commit
+      - name: Detect PR
+        id: get_pr
+        run: |
+          PR=$(curl -s \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}/pulls \
+          | jq '.[0].number')
+
+          echo "PR_NUMBER=$PR" >> $GITHUB_ENV
+
+      # Send result to n8n
       - name: Send diff result to n8n
         run: |
           RESULT=$(cat diff_result.txt | jq -Rs .)
@@ -31,5 +44,5 @@ jobs:
           -d "{
             \"diff\": $RESULT,
             \"repo\": \"${{ github.repository }}\",
-            \"pr\": \"${{ github.event.pull_request.number }}\"
+            \"pr\": \"$PR_NUMBER\"
           }"
