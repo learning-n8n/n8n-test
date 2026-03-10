@@ -1,0 +1,48 @@
+name: OpenAPI Diff
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run OpenAPI Diff
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}:/specs \
+          openapitools/openapi-diff:latest \
+          /specs/openapi_specs/openapi_old.yaml \
+          /specs/openapi_specs/openapi_new.yaml > diff_result.txt
+
+      - name: Show diff result
+        run: cat diff_result.txt
+
+      # Detect PR related to this commit
+      - name: Detect PR
+        id: get_pr
+        run: |
+          PR=$(curl -s \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}/pulls \
+          | jq '.[0].number')
+
+          echo "PR_NUMBER=$PR" >> $GITHUB_ENV
+
+      # Send result to n8n
+      - name: Send diff result to n8n
+        run: |
+          RESULT=$(cat diff_result.txt | jq -Rs .)
+          curl -X POST https://n8n-learning.app.n8n.cloud/webhook/api-diff-result \
+          -H "Content-Type: application/json" \
+          -d "{
+            \"diff\": $RESULT,
+            \"repo\": \"${{ github.repository }}\",
+            \"pr\": \"$PR_NUMBER\"
+          }"

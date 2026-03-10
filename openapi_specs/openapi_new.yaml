@@ -1,0 +1,251 @@
+openapi: 3.1.0
+info:
+  title: Test API
+  description: Minimal FastAPI app for OpenAPI diff testing
+  version: 1.0.0
+paths:
+  /:
+    get:
+      tags:
+      - Root
+      summary: Root
+      description: Root endpoint
+      operationId: root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /items:
+    get:
+      tags:
+      - Items
+      summary: Get Items
+      description: Get all items
+      operationId: get_items_items_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ItemResponse'
+                type: array
+                title: Response Get Items Items Get
+    post:
+      tags:
+      - Items
+      summary: Create Item
+      description: Create a new item
+      operationId: create_item_items_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /items/{item_id}:
+    get:
+      tags:
+      - Items
+      summary: Get Item
+      description: Get a specific item by ID
+      operationId: get_item_items__item_id__get
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Item Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Items
+      summary: Delete Item
+      description: Delete an item by ID
+      operationId: delete_item_items__item_id__delete
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Item Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/regenerate-spec:
+    post:
+      tags:
+      - Admin
+      summary: Regenerate Spec
+      description: Manually trigger OpenAPI spec regeneration
+      operationId: regenerate_spec_api_regenerate_spec_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/spec-diff:
+    get:
+      tags:
+      - Admin
+      summary: Get Spec Diff
+      description: Get information about spec differences
+      operationId: get_spec_diff_api_spec_diff_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/openapi-diff:
+    post:
+      tags:
+      - OpenAPI Diff
+      summary: Openapi Diff
+      description: 'Compare two OpenAPI specs using openapi-diff tool.
+
+        Accepts old and new OpenAPI specs as strings (JSON or YAML).'
+      operationId: openapi_diff_api_openapi_diff_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenAPIDiffRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ItemCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        price:
+          type: number
+          title: Price
+      type: object
+      required:
+      - name
+      - price
+      title: ItemCreate
+    ItemResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        price:
+          type: number
+          title: Price
+      type: object
+      required:
+      - id
+      - name
+      - price
+      title: ItemResponse
+    OpenAPIDiffRequest:
+      properties:
+        oldSpec:
+          type: string
+          title: Oldspec
+        newSpec:
+          type: string
+          title: Newspec
+      type: object
+      required:
+      - oldSpec
+      - newSpec
+      title: OpenAPIDiffRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
