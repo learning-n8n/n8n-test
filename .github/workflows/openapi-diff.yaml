@@ -20,11 +20,11 @@ jobs:
 
       - name: Download openapi-diff
         run: |
-          wget https://repo1.maven.org/maven2/org/openapitools/openapi-diff-cli/2.1.0/openapi-diff-cli-2.1.0.jar
+          wget https://repo1.maven.org/maven2/org/openapitools/openapi-diff-cli/2.1.0/openapi-diff-cli-2.1.0-all.jar
 
       - name: Run diff
         run: |
-          java -jar openapi-diff-cli-2.1.0.jar \
+          java -jar openapi-diff-cli-2.1.0-all.jar \
           openapi_specs/openapi_old.yaml \
           openapi_specs/openapi_new.yaml > diff_result.txt
 
