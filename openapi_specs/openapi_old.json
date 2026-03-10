@@ -173,26 +173,6 @@
           }
         }
       }
-    },
-    "/api/regenerate-spec": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Regenerate Spec",
-        "description": "Manually trigger OpenAPI spec regeneration",
-        "operationId": "regenerate_spec_api_regenerate_spec_post",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
