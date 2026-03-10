@@ -28,4 +28,8 @@ jobs:
           RESULT=$(cat diff_result.txt | jq -Rs .)
           curl -X POST https://n8n-learning.app.n8n.cloud/webhook/api-diff-result \
           -H "Content-Type: application/json" \
-          -d "{\"diff\": $RESULT}"
+          -d "{
+            \"diff\": $RESULT,
+            \"repo\": \"${{ github.repository }}\",
+            \"pr\": \"${{ github.event.pull_request.number }}\"
+          }"
