@@ -253,26 +253,6 @@
           }
         }
       }
-    },
-    "/api/openapi-diff-files": {
-      "post": {
-        "tags": [
-          "OpenAPI Diff"
-        ],
-        "summary": "Openapi Diff From Files",
-        "description": "Compare OpenAPI specs from automatically generated files.\nUses openapi_specs/openapi_old.json and openapi_specs/openapi_new.json",
-        "operationId": "openapi_diff_from_files_api_openapi_diff_files_post",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {

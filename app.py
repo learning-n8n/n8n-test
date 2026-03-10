@@ -307,31 +307,31 @@ async def openapi_diff_python(old_spec: str, new_spec: str):
         return {"error": f"Failed to parse or compare specs: {str(e)}"}
 
 
-@app.post("/api/openapi-diff-files", tags=["OpenAPI Diff"])
-async def openapi_diff_from_files():
-    """
-    Compare OpenAPI specs from automatically generated files.
-    Uses openapi_specs/openapi_old.json and openapi_specs/openapi_new.json
-    """
-    old_file = SPECS_DIR / "openapi_old.json"
-    new_file = SPECS_DIR / "openapi_new.json"
+# @app.post("/api/openapi-diff-files", tags=["OpenAPI Diff"])
+# async def openapi_diff_from_files():
+#     """
+#     Compare OpenAPI specs from automatically generated files.
+#     Uses openapi_specs/openapi_old.json and openapi_specs/openapi_new.json
+#     """
+#     old_file = SPECS_DIR / "openapi_old.json"
+#     new_file = SPECS_DIR / "openapi_new.json"
     
-    if not old_file.exists():
-        raise HTTPException(status_code=404, detail="Old spec file not found. Start the app, modify it, and restart to generate old spec.")
+#     if not old_file.exists():
+#         raise HTTPException(status_code=404, detail="Old spec file not found. Start the app, modify it, and restart to generate old spec.")
     
-    if not new_file.exists():
-        raise HTTPException(status_code=404, detail="New spec file not found. Start the app to generate spec.")
+#     if not new_file.exists():
+#         raise HTTPException(status_code=404, detail="New spec file not found. Start the app to generate spec.")
     
-    # Read files
-    with open(old_file) as f:
-        old_spec = f.read()
+#     # Read files
+#     with open(old_file) as f:
+#         old_spec = f.read()
     
-    with open(new_file) as f:
-        new_spec = f.read()
+#     with open(new_file) as f:
+#         new_spec = f.read()
     
-    # Use the diff endpoint logic
-    request = OpenAPIDiffRequest(oldSpec=old_spec, newSpec=new_spec)
-    return await openapi_diff(request)
+#     # Use the diff endpoint logic
+#     request = OpenAPIDiffRequest(oldSpec=old_spec, newSpec=new_spec)
+#     return await openapi_diff(request)
 
 
 
