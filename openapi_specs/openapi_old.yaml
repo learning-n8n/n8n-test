@@ -60,6 +60,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
   /items/{item_id}:
+    get:
+      tags:
+      - Items
+      summary: Get Item
+      description: Get a specific item by ID
+      operationId: get_item_items__item_id__get
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Item Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
       - Items
