@@ -12,25 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Download openapi-diff
+      - name: Run OpenAPI Diff
         run: |
-          wget https://github.com/OpenAPITools/openapi-diff/releases/download/v2.1.0/openapi-diff-cli-2.1.0-all.jar
-
-      - name: Run diff
-        run: |
-          java -jar openapi-diff-cli-2.1.0-all.jar \
-          openapi_specs/openapi_old.yaml \
-          openapi_specs/openapi_new.yaml > diff_result.txt
+          docker run --rm \
+          -v ${{ github.workspace }}:/specs \
+          openapitools/openapi-diff:latest \
+          /specs/openapi_specs/openapi_old.yaml \
+          /specs/openapi_specs/openapi_new.yaml > diff_result.txt
 
       - name: Show diff result
-        run: |
-          cat diff_result.txt
+        run: cat diff_result.txt
 
       - name: Send diff result to n8n
         run: |
