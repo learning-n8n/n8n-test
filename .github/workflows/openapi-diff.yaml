@@ -26,6 +26,6 @@ jobs:
       - name: Send diff result to n8n
         run: |
           RESULT=$(cat diff_result.txt | jq -Rs .)
-          curl -X POST https://n8n-learning.app.n8n.cloud/webhook-test/api-diff-result \
+          curl -X POST https://n8n-learning.app.n8n.cloud/webhook/api-diff-result \
           -H "Content-Type: application/json" \
           -d "{\"diff\": $RESULT}"
