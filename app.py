@@ -104,10 +104,10 @@ async def root():
     return {"message": "Welcome to Test API"}
 
 
-@app.get("/items", response_model=List[ItemResponse], tags=["Items"])
-async def get_items():
-    """Get all items"""
-    return items_db
+# @app.get("/items", response_model=List[ItemResponse], tags=["Items"])
+# async def get_items():
+#     """Get all items"""
+#     return items_db
 
 
 @app.get("/items/{item_id}", response_model=ItemResponse, tags=["Items"])
