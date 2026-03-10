@@ -1,0 +1,36 @@
+name: OpenAPI Diff
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download openapi-diff
+        run: |
+          wget https://repo1.maven.org/maven2/org/openapitools/openapi-diff-cli/2.1.0/openapi-diff-cli-2.1.0.jar
+
+      - name: Run diff
+        run: |
+          java -jar openapi-diff-cli-2.1.0.jar \
+          openapi_specs/openapi_old.yaml \
+          openapi_specs/openapi_new.yaml > diff_result.txt
+
+      - name: Send diff result to n8n
+        run: |
+          RESULT=$(cat diff_result.txt | jq -Rs .)
+          curl -X POST https://n8n-learning.app.n8n.cloud/webhook/api-diff-result \
+          -H "Content-Type: application/json" \
+          -d "{\"diff\": $RESULT}"

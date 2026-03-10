@@ -111,6 +111,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /api/regenerate-spec:
+    post:
+      tags:
+      - Admin
+      summary: Regenerate Spec
+      description: Manually trigger OpenAPI spec regeneration
+      operationId: regenerate_spec_api_regenerate_spec_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/spec-diff:
+    get:
+      tags:
+      - Admin
+      summary: Get Spec Diff
+      description: Get information about spec differences
+      operationId: get_spec_diff_api_spec_diff_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/openapi-diff:
+    post:
+      tags:
+      - OpenAPI Diff
+      summary: Openapi Diff
+      description: 'Compare two OpenAPI specs using openapi-diff tool.
+
+        Accepts old and new OpenAPI specs as strings (JSON or YAML).'
+      operationId: openapi_diff_api_openapi_diff_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenAPIDiffRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/openapi-diff-files:
+    post:
+      tags:
+      - OpenAPI Diff
+      summary: Openapi Diff From Files
+      description: 'Compare OpenAPI specs from automatically generated files.
+
+        Uses openapi_specs/openapi_old.json and openapi_specs/openapi_new.json'
+      operationId: openapi_diff_from_files_api_openapi_diff_files_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
 components:
   schemas:
     HTTPValidationError:
@@ -162,6 +230,19 @@ components:
       - name
       - price
       title: ItemResponse
+    OpenAPIDiffRequest:
+      properties:
+        oldSpec:
+          type: string
+          title: Oldspec
+        newSpec:
+          type: string
+          title: Newspec
+      type: object
+      required:
+      - oldSpec
+      - newSpec
+      title: OpenAPIDiffRequest
     ValidationError:
       properties:
         loc:
