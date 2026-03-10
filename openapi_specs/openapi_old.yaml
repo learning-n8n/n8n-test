@@ -17,6 +17,48 @@ paths:
           content:
             application/json:
               schema: {}
+  /items:
+    get:
+      tags:
+      - Items
+      summary: Get Items
+      description: Get all items
+      operationId: get_items_items_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ItemResponse'
+                type: array
+                title: Response Get Items Items Get
+    post:
+      tags:
+      - Items
+      summary: Create Item
+      description: Create a new item
+      operationId: create_item_items_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /items/{item_id}:
     get:
       tags:
@@ -63,32 +105,6 @@ paths:
           content:
             application/json:
               schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /items:
-    post:
-      tags:
-      - Items
-      summary: Create Item
-      description: Create a new item
-      operationId: create_item_items_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ItemCreate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ItemResponse'
         '422':
           description: Validation Error
           content:

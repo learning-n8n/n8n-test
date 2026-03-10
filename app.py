@@ -110,13 +110,13 @@ async def get_items():
     return items_db
 
 
-@app.get("/items/{item_id}", response_model=ItemResponse, tags=["Items"])
-async def get_item(item_id: int):
-    """Get a specific item by ID"""
-    item = next((item for item in items_db if item["id"] == item_id), None)
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return item
+# @app.get("/items/{item_id}", response_model=ItemResponse, tags=["Items"])
+# async def get_item(item_id: int):
+#     """Get a specific item by ID"""
+#     item = next((item for item in items_db if item["id"] == item_id), None)
+#     if not item:
+#         raise HTTPException(status_code=404, detail="Item not found")
+#     return item
 
 
 @app.post("/items", response_model=ItemResponse, tags=["Items"])
